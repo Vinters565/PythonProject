@@ -1,26 +1,45 @@
 import numpy as np
 from django.shortcuts import render
 from django.template.defaulttags import register
+from .models import *
 from datetime import datetime, timedelta, timezone
-from .forms import AddDateForm
 import pandas as pd
 from aiohttp import ClientSession
 import asyncio
+from .forms import AddDateForm
 
 def index(request):
     return render(request, 'GamingProfession/index.html')
 
 
 def demand(request):
-    return render(request, 'GamingProfession/demand.html')
+    year_statistic = YearStatistic.objects.all()
+    context = {
+        'year_statistic': year_statistic,
+    }
+    return render(request, 'GamingProfession/demand.html', context=context)
 
 
 def geography(request):
-    return render(request, 'GamingProfession/geography.html')
+    city_statistic = CityStatistic.objects.all()
+    context = {
+        'city_statistic': city_statistic,
+    }
+    return render(request, 'GamingProfession/geography.html', context=context)
 
 
 def skills(request):
-    return render(request, 'GamingProfession/skills.html')
+    skills_statistic = SkillsStatistic.objects.all()
+    key_skills = {row.year_skills: row.key_skills.split(';') for row in skills_statistic}
+    skills_count = {row.year_skills: row.skills_count.split(';') for row in skills_statistic}
+    years = [row.year_skills for row in skills_statistic]
+    context = {
+        'key_skills': key_skills,
+        'skills_count': skills_count,
+        'years': years,
+        'skills_statistic': skills_statistic
+    }
+    return render(request, 'GamingProfession/skills.html', context=context)
 
 
 def latest_vacancies(request):

@@ -3,3 +3,57 @@
 {% block title %}
     Навыки
 {% endblock %}
+
+{% block content %}
+    <h1 class="font-bold text-4xl mb-6 ml-4">Навыки</h1>
+    <div class="overflow-x-auto inline-block min-w-full align-middle">
+        <div class="sm:rounded-lg shadow-md overflow-hidden">
+            <table class="divide-y divide-gray-200 dark:divide-gray-700 w-full border-collapse">
+                <thead class="bg-gray-200 dark:bg-gray-700 ">
+                <tr>
+                    <th scope="col"
+                        class="py-3 px-3 text-center text-sm font-bold tracking-wider text-left text-gray-700 dark:text-gray-400">
+                    </th>
+                    <th scope="col"
+                        class="py-3 px-3 text-center text-base font-bold tracking-wider text-left text-gray-700 dark:text-gray-400"
+                        colspan="{{ years|length }}">
+                        Топ-20 востребованных навыков по годам
+                    </th>
+                </tr>
+                <tr>
+                    <th scope="col"
+                        class="py-3 px-3 text-sm font-bold tracking-wider text-left text-gray-700 dark:text-gray-400">
+                        №
+                    </th>
+                    {% for year in years %}
+                        <th scope="col"
+                            class="py-3 px-3 text-sm font-bold tracking-wider text-left text-gray-700 dark:text-gray-400 ">
+                            {{ year }}
+                        </th>
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody class="bg-gray-100 divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+                {% for index in 20|get_range %}
+                    <tr class="hover:bg-gray-200 dark:hover:bg-gray-700">
+                        <td class="py-4 px-3 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            {{ index|incr }}
+                        </td>
+                        {% for key in key_skills.keys %}
+                            <td class="py-4 px-2 text-sm font-medium text-gray-900 dark:text-white ">
+                                <p class="break-words">{{ key_skills|get_value:key|get_value:index }}</p>
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% for row in skills_statistic %}
+            {% if row.charts_skills %}
+                <p class="px-2"><img class="object-cover mt-12 mb-5 mx-auto sm:rounded-lg overflow-hidden drop-shadow-xl w-9/12"
+                        src="{{ row.charts_skills.url }}" alt=""></p>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

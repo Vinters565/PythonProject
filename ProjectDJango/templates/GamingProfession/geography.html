@@ -5,5 +5,62 @@
 {% endblock %}
 
 {% block content %}
-    <p>Geography</p>
+    <h1 class="font-bold text-4xl mb-6 ml-4">География</h1>
+    <div class="overflow-x-auto inline-block min-w-full align-middle">
+        <div class="flex justify-around">
+            <div class="sm:rounded-lg shadow-md overflow-hidden w-5/12">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <thead class="bg-gray-200 dark:bg-gray-700 ">
+                    <tr>
+                        <th scope="col"
+                            class="py-3 px-6 text-sm font-bold tracking-wider text-left text-gray-700 dark:text-gray-400 ">
+                            Город
+                        </th>
+                        <th scope="col"
+                            class="py-3 px-6 text-sm font-bold tracking-wider text-left text-gray-700 dark:text-gray-400">
+                            Доля вакансий по городам
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody class="bg-gray-100 divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+                    {% for row in city_statistic %}
+                        <tr class="hover:bg-gray-200 dark:hover:bg-gray-700">
+                            <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ row.city_salary }}</td>
+                            <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ row.salary_by_city }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="sm:rounded-lg shadow-md overflow-hidden w-5/12">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <thead class="bg-gray-200 dark:bg-gray-700 ">
+                    <tr>
+                        <th scope="col"
+                            class="py-3 px-6 text-sm font-bold tracking-wider text-left text-gray-700 dark:text-gray-400 ">
+                            Город
+                        </th>
+                        <th scope="col"
+                            class="py-3 px-6 text-sm font-bold tracking-wider text-left text-gray-700 dark:text-gray-400">
+                            Доля вакансий по городам
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody class="bg-gray-100 divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+                    {% for row in city_statistic %}
+                        <tr class="hover:bg-gray-200 dark:hover:bg-gray-700">
+                            <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ row.city_percentage }}</td>
+                            <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ row.percentage_by_city }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% for row in city_statistic %}
+            {% if row.charts_city %}
+                <p><img class="object-cover w-4/6 mt-12 mb-5 mx-auto sm:rounded-lg overflow-hidden drop-shadow-xl" src="{{ row.charts_city.url }}" alt=""></p>
+            {% endif %}
+        {% endfor %}
+    </div>
 {% endblock %}

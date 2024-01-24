@@ -3,3 +3,53 @@
 {% block title %}
     Востребованность
 {% endblock %}
+
+{% block content %}
+    <h1 class="font-bold text-4xl mb-6 ml-4">Востребованность</h1>
+    <div class="overflow-x-auto shadow-md sm:rounded-lg inline-block min-w-full align-middle">
+        <div class="overflow-hidden ">
+            <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-700">
+                <thead class="bg-gray-200 dark:bg-gray-700 ">
+                <tr>
+                    <th scope="col"
+                        class="py-3 px-6 text-sm font-bold tracking-wider text-left text-gray-700 dark:text-gray-400 ">
+                        Год
+                    </th>
+                    <th scope="col"
+                        class="py-3 px-6 text-sm font-bold tracking-wider text-left text-gray-700 dark:text-gray-400">
+                        Динамика уровня зарплат по годам
+                    </th>
+                    <th scope="col"
+                        class="py-3 px-6 text-sm font-bold tracking-wider text-left text-gray-700 dark:text-gray-400">
+                        Динамика количества вакансий по годам
+                    </th>
+                    <th scope="col"
+                        class="py-3 px-6 text-sm font-bold tracking-wider text-left text-gray-700 dark:text-gray-400">
+                        Динамика уровня зарплат по годам для выбранной профессии
+                    </th>
+                    <th scope="col"
+                        class="py-3 px-6 text-sm font-bold tracking-wider text-left text-gray-700 dark:text-gray-400">
+                        Динамика количества вакансий по годам для выбранной профессии
+                    </th>
+                </tr>
+                </thead>
+                <tbody class="bg-gray-100 divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+                {% for row in year_statistic %}
+                    <tr class="hover:bg-gray-200 dark:hover:bg-gray-700">
+                        <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ row.year }}</td>
+                        <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ row.salary_by_years }}</td>
+                        <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ row.number_vac_by_years }}</td>
+                        <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ row.salary_by_years_profession }}</td>
+                        <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ row.number_profession_by_years }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% for row in year_statistic %}
+        {% if row.charts_years %}
+            <p><img class="object-cover w-4/6 mt-12 mb-5 mx-auto sm:rounded-lg overflow-hidden drop-shadow-xl" src="{{ row.charts_years.url }}" alt=""></p>
+        {% endif %}
+    {% endfor %}
+{% endblock %}
