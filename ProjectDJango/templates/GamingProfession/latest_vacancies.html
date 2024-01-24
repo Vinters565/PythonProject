@@ -3,3 +3,77 @@
 {% block title %}
     Последние вакансии
 {% endblock %}
+
+{% block content %}
+    <h1 class="font-bold text-4xl ml-4 mb-6">Последние вакансии с сервиса head hunter {{ date }}</h1>
+    <form class="[&>ul]:text-red-800 [&>label]:font-medium [&>label]:text-lg [&>p]:inline-block [&>p]:mr-4 mb-6"
+          action="{% url 'latest_vacancies' %}" method="post">
+        {% csrf_token %}
+        {{ forms.as_p }}
+        <button class="bg-indigo-500 p-2 rounded-lg text-white" type="submit">Показать вакансии</button>
+    </form>
+    <div class="flex flex-wrap">
+        {% for vacancy in vacancies %}
+            <div class="shadow-lg transition duration-500 ease-in-out transform hover:-translate-y-5 hover:shadow-2xl rounded-lg w-full cursor-pointer overflow-hidden border mb-6">
+                <a href="{{ vacancy.url }}">
+                    <div class="bg-white w-full p-4">
+                        <p class="text-indigo-500 font-medium text-3xl mb-2">
+                            {{ vacancy.name }}
+                        </p>
+                        <p class="text-gray-800 text-lg font-medium mb-2">
+                            {% if vacancy.salary_from|lower != 'nan' and vacancy.salary_to|lower != 'nan' %}
+                                от {{ vacancy.salary_from|to_int }} до {{ vacancy.salary_to|to_int }}
+                                {{ vacancy.salary_currency }}
+                            {% elif vacancy.salary_from|lower != 'nan' %}
+                                от {{ vacancy.salary_from|to_int }} {{ vacancy.salary_currency }}
+                            {% elif vacancy.salary_to|lower != 'nan' %}
+                                до {{ vacancy.salary_to|to_int }} {{ vacancy.salary_currency }}
+                            {% else %}
+                                з/п не указана
+                            {% endif %}
+                        </p>
+                        <div class="flex items-center">
+                            <p class="inline-block text-gray-600 font-normal text-lg mr-3 mb-1">
+                                Компания: {{ vacancy.employer }}
+                            </p>
+                            {% if vacancy.employer_logo %}
+                                <div class="">
+                                    <img class="max-h-16 w-full"
+                                         src="{{ vacancy.employer_logo }}"
+                                         alt="">
+                                </div>
+                            {% endif %}
+                        </div>
+                        <p class="text-gray-600 text-lg font-normal mb-3">
+                            Регион: {{ vacancy.area_name }}
+                        </p>
+                        <div class="border-t-2"></div>
+                        <div class="mt-3 mb-3 [&>ul]:list-disc [&>ol]:list-decimal [&>*]:list-inside [&>ul>li>p]:inline-block">
+                            {{ vacancy.description|safe }}
+                        </div>
+
+                        {% if vacancy.key_skills %}
+                            <div class="border-t-2"></div>
+
+                            <h3 class="font-bold text-xl mt-3">
+                                Ключевые навыки
+                            </h3>
+                            <div class="flex flex-wrap justify-starts items-center pb-3 text-sm text-white font-medium">
+
+                                {% for skill in vacancy.key_skills %}
+                                    <span class="m-1 px-2 py-1 rounded bg-indigo-500">
+                                    {{ skill }}
+                                </span>
+                                {% endfor %}
+
+                            </div>
+                        {% endif %}
+                        <p class="text-gray-600 font-light text-md mr-2">
+                            Дата публикации: {{ vacancy.published_at|format_datetime }}
+                        </p>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
